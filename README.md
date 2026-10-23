@@ -25,10 +25,11 @@ Using unsupervised **Structural Topic Modeling (STM)** ($K = 40$) on **3,657 tem
 
 ---
 
-## 3. Methodological Architecture: Strict Separation of Concerns
+## 3. Methodological Architecture: Python and R, RMagic (rpy2)
 To ensure reproducibility and adherence to **Tidy Data Principles**, the computational pipeline is strictly partitioned by language and function:
 - **Python (Data Acquisition Only):** Used exclusively for polite, rate-limited web scraping, DOM heuristic parsing, and raw JSONL serialization (`01` and `02`). **Zero** data cleaning or NLP preprocessing occurs in Python.
 - **R / Tidyverse (Preprocessing, NLP, & Statistical Modeling):** Used exclusively for fault-tolerant JSONL ingestion, regex temporal normalization, `tidytext` tokenization, `textstem` lemmatization, the "Plural Bypass" custom stop-word filter, STM matrix factorization, regression modeling, and visualization (`03` through `09`).
+- **Rmagic in Google Colab, Stanford Library:** `[https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab](https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab)`
 
 ---
 
