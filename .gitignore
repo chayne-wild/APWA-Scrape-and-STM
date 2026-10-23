@@ -1,0 +1,21 @@
+# Ignore raw full-text corpus and large serialized R objects (>50MB)
+*.jsonl
+*.rds
+data/*.jsonl
+data/*.rds
+
+# Keep folder placeholders and lightweight metadata indices
+!data/.gitkeep
+!results/charts/.gitkeep
+!results/figures/.gitkeep
+!data/apwa_master_urls.csv
+!data/apwa_excluded_urls.csv
+
+# R, Python, and OS temporary files
+.Rhistory
+.RData
+.Rproj.user
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
