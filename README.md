@@ -46,4 +46,25 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 
 ---
 
+## Suggested Citation
+
+**Text Citation (APA / ASA Style):**
+> Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/apwa-carceral-digital-turn
+
+**BibTeX (Zotero / LaTeX / Better BibTeX):**
+```bibtex
+@software{thomas2026apwa,
+  author       = {Wild, Chayne},
+  title        = {Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)},
+  year         = {2026},
+  month        = {10},
+  version      = {1.0.0},
+  organization = {Social, Political, Ethical, and Cultural Thought (ASPECT), Virginia Tech},
+  url          = {[https://github.com/chayne-wild/apwa-carceral-digital-turn](https://github.com/chayne-wild/apwa-carceral-digital-turn)},
+  note         = {Replication code and Structural Topic Modeling (STM) pipeline}
+}
+```
+
+**Archival Source Attribution:**
+> American Prison Writing Archive (APWA). Johns Hopkins University Sheridan Libraries. https://prisonwitness.org/
 
