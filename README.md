@@ -29,20 +29,20 @@ Using unsupervised **Structural Topic Modeling (STM)** ($K = 40$) on **3,657 tem
 To ensure reproducibility and adherence to **Tidy Data Principles**, the computational pipeline is strictly partitioned by language and function:
 - **Python (Data Acquisition Only):** Used exclusively for polite, rate-limited web scraping, DOM heuristic parsing, and raw JSONL serialization (`01` and `02`). **Zero** data cleaning or NLP preprocessing occurs in Python.
 - **R / Tidyverse (Preprocessing, NLP, & Statistical Modeling):** Used exclusively for fault-tolerant JSONL ingestion, regex temporal normalization, `tidytext` tokenization, `textstem` lemmatization, the "Plural Bypass" custom stop-word filter, STM matrix factorization, regression modeling, and visualization (`03` through `09`).
-- **Rmagic in Google Colab, Stanford Library:** `[https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab](https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab)`
+- **Rmagic in Google Colab, Stanford Library:** [https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab](https://guides.library.stanford.edu/programmatic_access_gdrive/r_colab)
 
 ---
 
 ## 4. Ethical & Institutional Compliance
 The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mission of bearing witness to the lived reality of incarceration. Because incarcerated authors write under conditions of extreme vulnerability and surveillance, our extraction protocol prioritized ethical non-interference and server respect:
-- **`robots.txt` & Terms of Service Compliance:** Verified against `[https://prisonwitness.org/robots.txt](https://prisonwitness.org/robots.txt)` (`Allow: /`) and the Johns Hopkins University Library Privacy Policy. No unlisted Personally Identifiable Information (PII) was collected.
+- **`robots.txt` & Terms of Service Compliance:** Verified against [https://prisonwitness.org/robots.txt](https://prisonwitness.org/robots.txt) (`Allow: /`) and the Johns Hopkins University Library Privacy Policy. No unlisted Personally Identifiable Information (PII) was collected.
 - **Polite Bot Identification:** All HTTP requests transmitted an explicit academic `User-Agent` header (`APWA_Virginia_Tech_Research_Bot/1.0 (chayne@vt.edu)`).
 - **Rate Limiting & Fault Tolerance:** Index scraping enforced randomized delays (`1.5` to `3.0` seconds) between requests, and concurrent essay extraction used local state-tracking (`apwa_master_urls.csv` and `apwa_excluded_urls.csv`) to prevent redundant server queries.
 
 ### Archival Snapshots (Wayback Machine)
-- **APWA Main Page:** `[https://web.archive.org/web/20260915215456/https://prisonwitness.org/](https://web.archive.org/web/20260915215456/https://prisonwitness.org/)`
-- **APWA About Page:** `[https://web.archive.org/web/20260915215555/https://prisonwitness.org/about-the-archive/](https://web.archive.org/web/20260915215555/https://prisonwitness.org/about-the-archive/)`
-- **JHU Library Privacy Policy:** `[https://web.archive.org/web/20260915215139/https://www.library.jhu.edu/policies/privacy/](https://web.archive.org/web/20260915215139/https://www.library.jhu.edu/policies/privacy/)`
+- **APWA Main Page:** [https://web.archive.org/web/20260915215456/https://prisonwitness.org/](https://web.archive.org/web/20260915215456/https://prisonwitness.org/)
+- **APWA About Page:** [https://web.archive.org/web/20260915215555/https://prisonwitness.org/about-the-archive/](https://web.archive.org/web/20260915215555/https://prisonwitness.org/about-the-archive/)
+- **JHU Library Privacy Policy:** [https://web.archive.org/web/20260915215139/https://www.library.jhu.edu/policies/privacy/](https://web.archive.org/web/20260915215139/https://www.library.jhu.edu/policies/privacy/)
 
 ---
 
@@ -66,5 +66,5 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 ```
 
 **Archival Source Attribution:**
-> American Prison Writing Archive (APWA). Johns Hopkins University Sheridan Libraries. https://prisonwitness.org/
+> American Prison Writing Archive (APWA). Johns Hopkins University Sheridan Libraries. [https://prisonwitness.org/](https://prisonwitness.org/)
 
