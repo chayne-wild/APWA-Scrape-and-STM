@@ -49,7 +49,7 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 ## Suggested Citation
 
 **Text Citation (APA / ASA Style):**
-> Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/apwa-carceral-digital-turn
+> Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/apwa-scrape-and-stm
 
 **BibTeX (Zotero / LaTeX / Better BibTeX):**
 ```bibtex
@@ -60,7 +60,7 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
   month        = {10},
   version      = {1.0.0},
   organization = {Alliance for Social, Political, Ethical, and Cultural Thought (ASPECT), Virginia Tech},
-  url          = {[https://github.com/chayne-wild/apwa-carceral-digital-turn](https://github.com/chayne-wild/apwa-carceral-digital-turn)},
+  url          = {[https://github.com/chayne-wild/apwa-scrape-and-stm](https://github.com/chayne-wild/apwa-scrape-and-stm)},
   note         = {Replication code and Structural Topic Modeling (STM) pipeline}
 }
 ```
