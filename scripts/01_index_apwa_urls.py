@@ -22,7 +22,7 @@ if os.getcwd() != safe_workspace:
 
 # 2. Scraper Configuration & Polite Academic Identification Header
 master_csv = 'apwa_master_urls.csv'
-base_url = '[https://prisonwitness.org/the-archive/](https://prisonwitness.org/the-archive/)'
+base_url = 'https://prisonwitness.org/the-archive/'
 max_pages = 181
 headers = {
     'User-Agent': 'APWA_Virginia_Tech_Research_Bot/1.0 (chayne@vt.edu)'

@@ -1,5 +1,16 @@
 # Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chayne-wild/APWA-Scrape-and-STM/blob/main/APWA_Scrape_and_STM.ipynb)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)
+![R 4.0+](https://img.shields.io/badge/R-4.0+-276DC3.svg)
+
+An end-to-end web scraping, Natural Language Processing (NLP), and **Structural Topic Modeling (STM)** replication pipeline analyzing **3,657 temporally normalized essays** from the American Prison Writing Archive (APWA).
+
+Built primarily for **Google Colaboratory** (with an integrated Python-to-R `rpy2` `%%R` bridge and standalone CLI orchestration via `run_pipeline.py`), this repository provides both modular scripts (`scripts/00`–`09`) and a unified sequential notebook (`APWA_Scrape_and_STM.ipynb`).
+
+---
+
 ## 1. Project Overview & Research Question
 **Driving Research Question:** *How have incarcerated writers in the American Prison Writing Archive (APWA) discussed and documented the "carceral-digital turn," and did their critiques prefigure mainstream academic literature?*
 
@@ -49,7 +60,7 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 ## Suggested Citation
 
 **Text Citation (APA / ASA Style):**
-> Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/apwa-scrape-and-stm
+> Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/APWA-Scrape-and-STM
 
 **BibTeX (Zotero / LaTeX / Better BibTeX):**
 ```bibtex
@@ -60,7 +71,7 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
   month        = {10},
   version      = {1.0.0},
   organization = {Alliance for Social, Political, Ethical, and Cultural Thought (ASPECT), Virginia Tech},
-  url          = {[https://github.com/chayne-wild/apwa-scrape-and-stm](https://github.com/chayne-wild/apwa-scrape-and-stm)},
+  url          = {https://github.com/chayne-wild/APWA-Scrape-and-STM},
   note         = {Replication code and Structural Topic Modeling (STM) pipeline}
 }
 ```
