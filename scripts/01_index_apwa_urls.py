@@ -1,22 +1,21 @@
 # ==============================================================================
-# SCRIPT 02: PARSE & EXTRACT APWA ESSAYS AND METADATA (PYTHON)
-# Task: Read 'apwa_master_urls.csv', concurrently scrape each essay's transcript
-#       and metadata, and save results in batches to 'apwa_parsed_archive.jsonl'.
-#       Distinguishes between genuine exclusions (no transcript) and transient
-#       network errors (429/5xx/timeouts) so network glitches can be retried.
+# SCRIPT 01: DYNAMICALLY VERIFY & INDEX APWA ARCHIVE URLS (PYTHON)
+# Task: 1. Automatically verify the exact total number of archive pages.
+#       2. Paginate through all pages of the APWA web archive to collect and
+#          save all unique essay URLs into 'apwa_master_urls.csv'.
+#       3. Includes state-tracking (resume capability) and cross-page deduplication
 # ==============================================================================
 
 import os
+import re
 import time
 import random
 import requests
-import json
 import csv
-import threading
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# 1. Strict Google Drive Mount & Workspace Isolation
+# 1. Strict Google Drive Mount & Workspace Verification
 drive_mount_point = '/content/drive'
 safe_workspace = '/content/drive/MyDrive/colab_apwa_folder'
 
@@ -30,232 +29,177 @@ os.makedirs(safe_workspace, exist_ok=True)
 os.chdir(safe_workspace)
 
 if os.getcwd() != safe_workspace:
-    raise RuntimeError(
-        f"SECURITY HALT: Execution environment compromised. "
-        f"Current directory is {os.getcwd()}, expected {safe_workspace}. Script terminated."
-    )
+    raise RuntimeError(f"SECURITY HALT: Current directory is {os.getcwd()}, expected {safe_workspace}.")
 
+# 2. Scraper Configuration
 master_csv = 'apwa_master_urls.csv'
-output_file = 'apwa_parsed_archive.jsonl'
-excluded_csv = 'apwa_excluded_urls.csv'
-
-# ==============================================================================
-# 2. CONCURRENCY & RATE-LIMITING CONFIGURATION (CHOOSE MODE A OR MODE B)
-# ==============================================================================
+base_url = 'https://prisonwitness.org/the-archive/'
 
 # --- [MODE A: POLITE ACADEMIC CONFIGURATION (DEFAULT)] ---
-MAX_WORKERS = 4   # Gentle concurrency that respects university servers
-BATCH_SIZE = 50   # Number of items to hold in memory before writing to Drive
-MIN_DELAY = 0.5   # Minimum delay (seconds) per worker before each request
-MAX_DELAY = 1.5   # Maximum delay (seconds) per worker before each request
+MIN_DELAY = 1.5
+MAX_DELAY = 3.0
 headers = {
     'User-Agent': 'APWA_Virginia_Tech_Research_Bot/1.0 (chayne@vt.edu)'
 }
 
-# --- [MODE B: AGGRESSIVE 15-WORKER "SPEED RUN" CONFIGURATION (COMMENTED OUT)] ---
-# Uncomment the block below (and comment out Mode A above) to speed-run with
-# 15 simultaneous workers and zero artificial throttling.
-# MAX_WORKERS = 15  # High concurrency speed-run. Reduce if server returns 429 errors.
-# BATCH_SIZE = 50   # Number of items to hold in memory before writing to Drive.
-# MIN_DELAY = 0.0   # Zero artificial delay
-# MAX_DELAY = 0.0   # Zero artificial delay
+# --- [MODE B: SPEED RUN CONFIGURATION (COMMENTED OUT)] ---
+# Uncomment the 5 lines below (and comment out Mode A above) for fast indexing:
+# MIN_DELAY = 0.0
+# MAX_DELAY = 0.2
 # headers = {
 #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 # }
-# ==============================================================================
-
-# Thread-safe buffers, locks, and thread-local HTTP sessions
-write_lock = threading.Lock()
-thread_local = threading.local()
-
-json_buffer = []
-excluded_buffer = []
-success_count = 0
-excluded_count = 0
-retry_error_count = 0
 
 
-def get_thread_session():
+def get_page_essay_urls(session, page_num):
     """
-    Provides each worker thread with its own persistent requests.Session()
-    for TCP/TLS connection pooling (HTTP Keep-Alive).
+    Fetches a specific archive page and returns a set of absolute essay URLs found on it.
+    Returns an empty set if the page is out of bounds (404) or contains no essays.
     """
-    if not hasattr(thread_local, "session"):
-        thread_local.session = requests.Session()
-    return thread_local.session
+    target_url = f"{base_url}{page_num}/" if page_num > 1 else base_url
+    response = session.get(target_url, headers=headers, timeout=15)
+
+    # If the server returns 404 Not Found, we have passed the last page
+    if response.status_code == 404:
+        return set(), None
+
+    response.raise_for_status()
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    page_urls = set()
+    for link in soup.find_all('a', href=True):
+        href = link['href']
+        if '/apwa-essay/' in href:
+            full_url = urljoin(base_url, href)
+            page_urls.add(full_url)
+
+    return page_urls, soup
 
 
-def flush_buffers():
-    """Writes buffered data to Google Drive in a single batch operation."""
-    global json_buffer, excluded_buffer
-
-    if json_buffer:
-        with open(output_file, 'a', encoding='utf-8') as f_out:
-            f_out.write('\n'.join(json_buffer) + '\n')
-            f_out.flush()
-        json_buffer.clear()
-
-    if excluded_buffer:
-        with open(excluded_csv, 'a', encoding='utf-8', newline='') as f_ex:
-            writer = csv.writer(f_ex)
-            writer.writerows(excluded_buffer)
-            f_ex.flush()
-        excluded_buffer.clear()
-
-
-def parse_apwa_page(url):
+def verify_total_pages(session):
     """
-    Extracts the transcript and metadata from an APWA essay page.
-    Returns a 3-tuple: (url, status, payload)
-      - status == 'SUCCESS': payload is the parsed dictionary
-      - status == 'EXCLUDE': payload is the exclusion reason string (permanent skip)
-      - status == 'RETRY':   payload is the transient error string (will retry on next run)
+    Dynamically determines and verifies the exact number of archive pages (X).
+    1. Checks Page 1 for pagination links to get an initial upper-bound estimate.
+    2. Uses exponential probing + binary search to verify the exact final page
+       that contains valid '/apwa-essay/' links.
     """
-    try:
+    print("Verifying total number of archive pages on prisonwitness.org...")
+    page_1_urls, soup = get_page_essay_urls(session, 1)
+
+    if not page_1_urls or soup is None:
+        raise RuntimeError("CRITICAL ERROR: Could not find any essays on Page 1. Check archive availability.")
+
+    # Extract any page numbers visible in Page 1's pagination bar
+    candidate_max = 1
+    page_num_pattern = re.compile(r'/the-archive/(?:page/)?(\d+)/?')
+    for link in soup.find_all('a', href=True):
+        match = page_num_pattern.search(link['href'])
+        if match:
+            candidate_max = max(candidate_max, int(match.group(1)))
+
+    # Fallback baseline if pagination links are hidden or rendered via JS
+    if candidate_max <= 1:
+        candidate_max = 180
+
+    print(f"Initial pagination hint from Page 1: ~{candidate_max} pages. Verifying exact boundary...")
+
+    # Helper to test if a given page number has at least 1 essay
+    cache = {1: True}
+    def has_essays(p):
+        if p in cache:
+            return cache[p]
         if MAX_DELAY > 0:
-            time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
+            time.sleep(random.uniform(0.2, 0.5))
+        urls, _ = get_page_essay_urls(session, p)
+        result = len(urls) > 0
+        cache[p] = result
+        return result
 
-        session = get_thread_session()
-        response = session.get(url, headers=headers, timeout=15)
-
-        # Transient server/rate-limit errors -> Do NOT permanently exclude!
-        if response.status_code == 429:
-            print(f"RATE LIMITED (429) on {url} - Marked for retry on next run.")
-            return (url, 'RETRY', 'HTTP 429 Rate Limited')
-        if response.status_code >= 500:
-            print(f"SERVER ERROR ({response.status_code}) on {url} - Marked for retry on next run.")
-            return (url, 'RETRY', f'HTTP {response.status_code} Server Error')
-
-        # 404 Not Found -> Essay was pulled or URL is dead (permanent exclusion)
-        if response.status_code == 404:
-            return (url, 'EXCLUDE', 'HTTP 404 Page Not Found')
-
-        response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
-
-        for element in soup(["script", "style"]):
-            element.extract()
-
-        page_text = soup.get_text(separator='\n', strip=True)
-
-        # Use rpartition to split on the LAST occurrence of '\nDetails\n'
-        # so essays containing the word "Details" are never truncated.
-        if '\nDetails\n' in page_text:
-            main_content, _, metadata_block = page_text.rpartition('\nDetails\n')
-        else:
-            return (url, 'EXCLUDE', 'Missing Details Section')
-
-        if '\nTranscript\n' in main_content:
-            _, _, transcript_text = main_content.partition('\nTranscript\n')
-        else:
-            return (url, 'EXCLUDE', 'No Typed Transcript Available (Scan Only)')
-
-        transcript_text = transcript_text.strip()
-        if not transcript_text:
-            return (url, 'EXCLUDE', 'Empty Transcript Text')
-
-        metadata_block, _, _ = metadata_block.partition('\nIf this is your essay')
-        meta_lines = [line.strip() for line in metadata_block.split('\n') if line.strip()]
-
-        metadata = {}
-        for i in range(0, len(meta_lines) - 1, 2):
-            metadata[meta_lines[i]] = meta_lines[i + 1]
-
-        return (url, 'SUCCESS', {
-            'url': url,
-            'slug': url.strip('/').split('/')[-1],
-            'transcript': transcript_text,
-            'metadata': metadata
-        })
-
-    except requests.exceptions.RequestException as e:
-        # Network timeouts or dropped connections should be retried, not excluded
-        return (url, 'RETRY', f'Network Error: {e}')
-    except Exception as e:
-        return (url, 'RETRY', f'Unexpected Parser Error: {e}')
-
-
-# --- Execution Block ---
-if __name__ == "__main__":
-    processed_urls = set()
-
-    # 1. Read already successful URLs
-    if os.path.exists(output_file):
-        with open(output_file, 'r', encoding='utf-8') as f:
-            for line in f:
-                try:
-                    data = json.loads(line)
-                    processed_urls.add(data['url'])
-                except json.JSONDecodeError:
-                    continue
-
-    # 2. Read already excluded URLs
-    if os.path.exists(excluded_csv):
-        with open(excluded_csv, 'r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            next(reader, None)  # Skip header
-            for row in reader:
-                if row:
-                    processed_urls.add(row[0])
+    # Step 1: Bracket the true maximum between [low, high]
+    if has_essays(candidate_max):
+        low = candidate_max
+        step = 1
+        while has_essays(low + step):
+            low += step
+            step *= 2
+        high = low + step  # First confirmed empty page
     else:
-        with open(excluded_csv, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(['excluded_url', 'reason'])
+        low = 1
+        high = candidate_max
 
-    # 3. Build deduplicated list of pending URLs
-    pending_urls = []
-    if not os.path.exists(master_csv):
-        raise FileNotFoundError(f"Master CSV '{master_csv}' missing. Run Script 01 first.")
+    # Step 2: Binary search within (low, high) to pinpoint the exact last valid page
+    while low + 1 < high:
+        mid = (low + high) // 2
+        if has_essays(mid):
+            low = mid
+        else:
+            high = mid
 
+    print(f"Verified! The archive currently contains exactly {low} active pages.")
+    return low
+
+
+# 3. State Tracking (Resume Capability & Cross-Page Deduplication)
+processed_pages = set()
+seen_urls = set()
+
+if os.path.exists(master_csv):
     with open(master_csv, 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
-        next(reader, None)  # Skip header
+        next(reader, None)  # Skip CSV header
         for row in reader:
-            if row and len(row) > 1:
-                essay_url = row[1].strip()
-                if essay_url and essay_url not in processed_urls:
-                    pending_urls.append(essay_url)
-                    # Add to processed_urls immediately to prevent duplicate threads
-                    # if master_csv contains any duplicate rows
-                    processed_urls.add(essay_url)
+            if row and len(row) >= 2:
+                if row[0].isdigit():
+                    processed_pages.add(int(row[0]))
+                seen_urls.add(row[1])
+    print(f"Found existing master CSV: {len(processed_pages)} pages ({len(seen_urls)} unique URLs) already indexed.")
+else:
+    with open(master_csv, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['source_page', 'essay_url'])
+    print("Initialized new master URL index: 'apwa_master_urls.csv'.")
 
-    total_pending = len(pending_urls)
-    print(f"Database sync: {len(processed_urls) - total_pending} unique URLs already handled.")
-    print(f"Beginning concurrent scrape on remaining {total_pending} URLs using {MAX_WORKERS} workers...")
+# 4. Dynamic Verification & Paginated Crawling Loop
+with requests.Session() as session:
+    max_pages = verify_total_pages(session)
+    print(f"Indexing status: {len(processed_pages)}/{max_pages} pages already completed.\n")
 
-    # 4. Execute concurrent scraping
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(parse_apwa_page, url): url for url in pending_urls}
+    for page in range(1, max_pages + 1):
+        if page in processed_pages:
+            continue
 
-        for i, future in enumerate(as_completed(futures), 1):
-            url, status, payload = future.result()
+        try:
+            page_urls, _ = get_page_essay_urls(session, page)
 
-            # Thread-safe write to buffers
-            with write_lock:
-                if status == 'SUCCESS':
-                    json_buffer.append(json.dumps(payload))
-                    success_count += 1
-                elif status == 'EXCLUDE':
-                    excluded_buffer.append([url, payload])
-                    excluded_count += 1
-                else:
-                    # status == 'RETRY': Do not write to excluded_csv so a future run retries it
-                    retry_error_count += 1
+            if not page_urls:
+                print(f"WARNING: Page {page}/{max_pages} returned 0 essay URLs. Skipping so it can be retried.")
+                continue
 
-                # Check batch threshold
-                if (len(json_buffer) + len(excluded_buffer)) >= BATCH_SIZE:
-                    flush_buffers()
-                    print(
-                        f"Progress: [{i}/{total_pending}] | "
-                        f"Saved: {success_count} | Excluded: {excluded_count} | "
-                        f"Transient Errors (to retry): {retry_error_count}"
-                    )
+            # Filter out any URLs already recorded on earlier pages
+            new_urls = sorted(page_urls - seen_urls)
 
-    # 5. Final flush for remaining items in buffer after threads complete
-    flush_buffers()
-    print(
-        f"\n[TASK 02 COMPLETE] Extraction finished.\n"
-        f"  -> Successfully Saved : {success_count}\n"
-        f"  -> Permanently Excluded (No Transcript/404): {excluded_count}\n"
-        f"  -> Transient Network Errors (Run script again to retry): {retry_error_count}"
-    )
+            # Immediately append discovered URLs to disk
+            with open(master_csv, 'a', encoding='utf-8', newline='') as f:
+                writer = csv.writer(f)
+                for essay_url in new_urls:
+                    writer.writerow([page, essay_url])
+                    seen_urls.add(essay_url)
+
+            print(
+                f"Page {page}/{max_pages} indexed: Found {len(page_urls)} essays "
+                f"({len(new_urls)} new, {len(page_urls) - len(new_urls)} duplicates skipped)."
+            )
+
+            # Throttling between page requests
+            if MAX_DELAY > 0:
+                time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
+
+        except requests.exceptions.RequestException as e:
+            print(f"Network error on page {page}: {e}")
+            print("Halting index scrape to prevent data gaps. Rerun script to resume.")
+            break
+        except Exception as e:
+            print(f"Unexpected error parsing page {page}: {e}")
+            break
+
+print(f"\n[TASK 01 COMPLETE] Master URL index ({len(seen_urls)} total unique URLs) saved to: {os.path.join(safe_workspace, master_csv)}")
