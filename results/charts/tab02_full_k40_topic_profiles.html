@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+
+</head>
+<body>
+<div id="zpxapbarmc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  <style>#zpxapbarmc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#zpxapbarmc thead, #zpxapbarmc tbody, #zpxapbarmc tfoot, #zpxapbarmc tr, #zpxapbarmc td, #zpxapbarmc th {
+  border-style: none;
+}
+
+#zpxapbarmc p {
+  margin: 0;
+  padding: 0;
+}
+
+#zpxapbarmc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 11px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#zpxapbarmc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zpxapbarmc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zpxapbarmc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zpxapbarmc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zpxapbarmc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zpxapbarmc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zpxapbarmc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zpxapbarmc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zpxapbarmc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zpxapbarmc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zpxapbarmc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zpxapbarmc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zpxapbarmc .gt_row {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zpxapbarmc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zpxapbarmc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zpxapbarmc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zpxapbarmc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zpxapbarmc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zpxapbarmc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zpxapbarmc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zpxapbarmc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zpxapbarmc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zpxapbarmc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zpxapbarmc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zpxapbarmc .gt_left {
+  text-align: left;
+}
+
+#zpxapbarmc .gt_center {
+  text-align: center;
+}
+
+#zpxapbarmc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zpxapbarmc .gt_font_normal {
+  font-weight: normal;
+}
+
+#zpxapbarmc .gt_font_bold {
+  font-weight: bold;
+}
+
+#zpxapbarmc .gt_font_italic {
+  font-style: italic;
+}
+
+#zpxapbarmc .gt_super {
+  font-size: 65%;
+}
+
+#zpxapbarmc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zpxapbarmc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zpxapbarmc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zpxapbarmc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zpxapbarmc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zpxapbarmc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zpxapbarmc .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#zpxapbarmc .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zpxapbarmc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+  <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <colgroup>
+    <col style="width:85px;"/>
+    <col style="width:95px;"/>
+    <col style="width:85px;"/>
+    <col style="width:85px;"/>
+    <col style="width:340px;"/>
+    <col style="width:340px;"/>
+  </colgroup>
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="6" class="gt_heading gt_title gt_font_normal" style><span class='gt_from_md'><strong>Table 2. Complete Structural Topic Model (K = 40) Lexical Profiles and Corpus Prevalence</strong></span></td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Estimated across N = 3,713 APWA essays (1965–2026) with ~ s(clean_year) prevalence prior</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Topic_Label">Topic</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Prop_Pct">Corpus Share (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Exclusivity">Exclusivity</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Coherence">Coherence</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="FREX_Words">Top 10 FREX Words (Frequency &amp; Exclusivity)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Prob_Words">Top 10 Highest Probability Words</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 01</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.33</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.79</td>
+<td headers="Coherence" class="gt_row gt_right">−38.72</td>
+<td headers="FREX_Words" class="gt_row gt_left">tucson, usp, mason, huffstuttler, pause, frederick, wisconsin, popcorn, farinsky, entry</td>
+<td headers="Prob_Words" class="gt_row gt_left">tucson, usp, write, god, essay, writing, talk, staff, love, share</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 02</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.52</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.64</td>
+<td headers="Coherence" class="gt_row gt_right">−61.60</td>
+<td headers="FREX_Words" class="gt_row gt_left">lap, player, cube, nba, team, chess, softball, registry, joe, league</td>
+<td headers="Prob_Words" class="gt_row gt_left">offender, team, count, sex, sentence, family, player, law, bill, letter</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 03</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.88</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.59</td>
+<td headers="Coherence" class="gt_row gt_right">−120.58</td>
+<td headers="FREX_Words" class="gt_row gt_left">kops, jucado, golem, idaho, idoc, sccc, kop, dist, msp, lexis</td>
+<td headers="Prob_Words" class="gt_row gt_left">missouri, mdoc, kops, cop, staff, system, idoc, judge, cage, force</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 04</td>
+<td headers="Prop_Pct" class="gt_row gt_right">3.23</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.85</td>
+<td headers="Coherence" class="gt_row gt_right">−60.96</td>
+<td headers="FREX_Words" class="gt_row gt_left">mail, grievance, copy, complaint, envelope, letter, confiscate, request, buddhist, file</td>
+<td headers="Prob_Words" class="gt_row gt_left">write, letter, mail, staff, legal, file, grievance, office, request, law</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 05</td>
+<td headers="Prop_Pct" class="gt_row gt_right">8.47</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.86</td>
+<td headers="Coherence" class="gt_row gt_right">−35.29</td>
+<td headers="FREX_Words" class="gt_row gt_left">love, pain, hurt, feel, cry, dream, heart, feeling, forgive, voice</td>
+<td headers="Prob_Words" class="gt_row gt_left">love, feel, hope, family, live, pain, friend, lose, mind, word</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 06</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.79</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.91</td>
+<td headers="Coherence" class="gt_row gt_right">−74.73</td>
+<td headers="FREX_Words" class="gt_row gt_left">msop, ptsd, disorder, veteran, minnesota, illness, mental, therapist, disability, client</td>
+<td headers="Prob_Words" class="gt_row gt_left">mental, health, treatment, disorder, mentally, veteran, illness, brain, ill, suicide</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 07</td>
+<td headers="Prop_Pct" class="gt_row gt_right">3.61</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.85</td>
+<td headers="Coherence" class="gt_row gt_right">−55.38</td>
+<td headers="FREX_Words" class="gt_row gt_left">mom, dad, mother, father, daughter, parent, aunt, cousin, marry, daddy</td>
+<td headers="Prob_Words" class="gt_row gt_left">mother, child, father, family, home, mom, parent, visit, school, son</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 08</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.26</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.13</td>
+<td headers="Coherence" class="gt_row gt_right">−41.12</td>
+<td headers="FREX_Words" class="gt_row gt_left">faiello, laser, attica, leroy, danny, dance, carlos, cherry, christine, peach</td>
+<td headers="Prob_Words" class="gt_row gt_left">sit, eye, hand, hear, night, head, yard, left, walk, watch</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 09</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.84</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.82</td>
+<td headers="Coherence" class="gt_row gt_right">−64.39</td>
+<td headers="FREX_Words" class="gt_row gt_left">slavery, panther, worley, slave, enslave, willie, voter, vote, comrade, carolina</td>
+<td headers="Prob_Words" class="gt_row gt_left">black, slave, slavery, american, vote, male, african, white, party, political</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 10</td>
+<td headers="Prop_Pct" class="gt_row gt_right">3.73</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.87</td>
+<td headers="Coherence" class="gt_row gt_right">−48.53</td>
+<td headers="FREX_Words" class="gt_row gt_left">michigan, mdoc, accountable, correctional, administrator, rule, correction, accountability, department, regulation</td>
+<td headers="Prob_Words" class="gt_row gt_left">staff, system, rule, correctional, correction, department, facility, policy, abuse, authority</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 11</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.45</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.39</td>
+<td headers="Coherence" class="gt_row gt_right">−73.94</td>
+<td headers="FREX_Words" class="gt_row gt_left">redact, davy, fiend, fuck, flush, kirkland, whitecell, ect, yea, dope</td>
+<td headers="Prob_Words" class="gt_row gt_left">redact, water, call, fuck, world, god, live, shit, toilet, force</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 12</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.32</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.81</td>
+<td headers="Coherence" class="gt_row gt_right">−44.60</td>
+<td headers="FREX_Words" class="gt_row gt_left">parole, board, statute, statutory, miller, eligibility, provision, imprisonment, eligible, sentence</td>
+<td headers="Prob_Words" class="gt_row gt_left">parole, sentence, board, law, court, release, serve, murder, death, degree</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 13</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.09</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.38</td>
+<td headers="Coherence" class="gt_row gt_right">−51.48</td>
+<td headers="FREX_Words" class="gt_row gt_left">meme, dimension, principle, deterrence, equity, ego, prejudice, wheeler, leviathan, tradition</td>
+<td headers="Prob_Words" class="gt_row gt_left">law, justice, system, american, punishment, social, court, power, society, principle</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 14</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.89</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.75</td>
+<td headers="Coherence" class="gt_row gt_right">−94.08</td>
+<td headers="FREX_Words" class="gt_row gt_left">tdcj, texas, jake, vermont, maine, gonzalez, huntsville, stan, corcraft, spit</td>
+<td headers="Prob_Words" class="gt_row gt_left">texas, unit, tdcj, job, hour, library, page, building, week, jake</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 15</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.21</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.78</td>
+<td headers="Coherence" class="gt_row gt_right">−61.44</td>
+<td headers="FREX_Words" class="gt_row gt_left">surgery, medical, ben, nurse, doctor, infirmary, appointment, patient, hospital, medication</td>
+<td headers="Prob_Words" class="gt_row gt_left">medical, care, doctor, health, staff, treatment, nurse, hospital, medication, call</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 16</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.70</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.84</td>
+<td headers="Coherence" class="gt_row gt_right">−145.81</td>
+<td headers="FREX_Words" class="gt_row gt_left">por, pero, yoruba, cuando, donde, vida, aqui, muy, tengo, porque</td>
+<td headers="Prob_Words" class="gt_row gt_left">mexico, perez, con, system, por, para, los, ofthe, pero, religious</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 17</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.01</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.82</td>
+<td headers="Coherence" class="gt_row gt_right">−56.24</td>
+<td headers="FREX_Words" class="gt_row gt_left">queer, european, supremacy, racist, racism, white, black, african, race, color</td>
+<td headers="Prob_Words" class="gt_row gt_left">black, white, race, american, racism, african, color, racist, america, woman</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 18</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.10</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.85</td>
+<td headers="Coherence" class="gt_row gt_right">−82.15</td>
+<td headers="FREX_Words" class="gt_row gt_left">adc, arkansas, sex, sexual, transgender, rape, predator, sexually, homosexual, female</td>
+<td headers="Prob_Words" class="gt_row gt_left">sex, offender, sexual, person, arkansas, system, adc, abuse, child, rape</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 19</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.01</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.73</td>
+<td headers="Coherence" class="gt_row gt_right">−72.20</td>
+<td headers="FREX_Words" class="gt_row gt_left">hattley, cocaine, retrieve, addict, user, opium, opioid, heroin, pirkel, dealer</td>
+<td headers="Prob_Words" class="gt_row gt_left">drug, addict, war, law, incarceration, create, america, cocaine, addiction, policy</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 20</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.84</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.89</td>
+<td headers="Coherence" class="gt_row gt_right">−67.43</td>
+<td headers="FREX_Words" class="gt_row gt_left">reflection, consciousness, particle, lightbody, upload, intelligence, roughly, perceptual, emotional, grassroot</td>
+<td headers="Prob_Words" class="gt_row gt_left">world, experience, consciousness, reflection, move, emotional, body, intelligence, process, existence</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 21</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.54</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.55</td>
+<td headers="Coherence" class="gt_row gt_right">−49.23</td>
+<td headers="FREX_Words" class="gt_row gt_left">organ, lacino, economic, capitalism, ccpoa, terrorist, economy, socio, democracy, capitalist</td>
+<td headers="Prob_Words" class="gt_row gt_left">american, government, social, america, country, police, system, political, poor, world</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 22</td>
+<td headers="Prop_Pct" class="gt_row gt_right">6.54</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.88</td>
+<td headers="Coherence" class="gt_row gt_right">−39.28</td>
+<td headers="FREX_Words" class="gt_row gt_left">lot, money, jail, stay, lock, pay, job, alot, deal, crazy</td>
+<td headers="Prob_Words" class="gt_row gt_left">money, bad, lot, pay, job, call, jail, lock, start, month</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 23</td>
+<td headers="Prop_Pct" class="gt_row gt_right">4.15</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.83</td>
+<td headers="Coherence" class="gt_row gt_right">−51.87</td>
+<td headers="FREX_Words" class="gt_row gt_left">jury, prosecutor, trial, attorney, defendant, defender, innocence, habeas, utah, prosecution</td>
+<td headers="Prob_Words" class="gt_row gt_left">court, judge, law, trial, attorney, prosecutor, conviction, evidence, justice, innocent</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 24</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.12</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.81</td>
+<td headers="Coherence" class="gt_row gt_right">−69.74</td>
+<td headers="FREX_Words" class="gt_row gt_left">noodle, bean, calorie, cheese, meat, ounce, meal, diet, alaska, cook</td>
+<td headers="Prob_Words" class="gt_row gt_left">food, meal, eat, bag, item, serve, water, cook, commissary, money</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 25</td>
+<td headers="Prop_Pct" class="gt_row gt_right">4.12</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.81</td>
+<td headers="Coherence" class="gt_row gt_right">−39.43</td>
+<td headers="FREX_Words" class="gt_row gt_left">taxpayer, billion, cost, tax, rate, budget, percent, million, incarceration, dollar</td>
+<td headers="Prob_Words" class="gt_row gt_left">system, sentence, justice, offender, incarceration, cost, law, rate, public, society</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 26</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.53</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.72</td>
+<td headers="Coherence" class="gt_row gt_right">−88.60</td>
+<td headers="FREX_Words" class="gt_row gt_left">fdc, detainee, iowa, beep, dcj, pretrial, tdoc, unusual, amendment, florida</td>
+<td headers="Prob_Words" class="gt_row gt_left">condition, violation, amendment, offender, iowa, official, due, detainee, court, law</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 27</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.81</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.47</td>
+<td headers="Coherence" class="gt_row gt_right">−95.69</td>
+<td headers="FREX_Words" class="gt_row gt_left">matt, ohio, marion, wiccan, lucasville, belmont, lifer, hocking, patterson, guillotine</td>
+<td headers="Prob_Words" class="gt_row gt_left">ohio, lifer, matt, faith, level, experience, parole, institution, court, death</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 28</td>
+<td headers="Prop_Pct" class="gt_row gt_right">4.61</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.46</td>
+<td headers="Coherence" class="gt_row gt_right">−42.21</td>
+<td headers="FREX_Words" class="gt_row gt_left">cuff, yell, celly, grab, sock, bunk, slam, door, boxer, tier</td>
+<td headers="Prob_Words" class="gt_row gt_left">door, walk, head, hand, call, sit, shower, stand, wall, hour</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 29</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.92</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.73</td>
+<td headers="Coherence" class="gt_row gt_right">−65.61</td>
+<td headers="FREX_Words" class="gt_row gt_left">solitary, confinement, supermax, isolation, torture, segregation, seg, christopher, pelican, rhu</td>
+<td headers="Prob_Words" class="gt_row gt_left">confinement, solitary, torture, isolation, human, mental, segregation, unit, punishment, social</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 30</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.16</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.90</td>
+<td headers="Coherence" class="gt_row gt_right">−74.52</td>
+<td headers="FREX_Words" class="gt_row gt_left">christ, jesus, lord, holy, god, bible, psalm, genesis, catholic, sin</td>
+<td headers="Prob_Words" class="gt_row gt_left">god, jesus, lord, bible, christian, church, word, faith, christ, sin</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 31</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.76</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.21</td>
+<td headers="Coherence" class="gt_row gt_right">−45.43</td>
+<td headers="FREX_Words" class="gt_row gt_left">durance, ara, adx, expirience, yoga, underworld, torres, eduardo, wisdom, govt</td>
+<td headers="Prob_Words" class="gt_row gt_left">truth, mind, world, understand, knowledge, woman, power, true, human, live</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 32</td>
+<td headers="Prop_Pct" class="gt_row gt_right">1.51</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.68</td>
+<td headers="Coherence" class="gt_row gt_right">−43.67</td>
+<td headers="FREX_Words" class="gt_row gt_left">levert, celldweller, brookshire, ritual, plan, solve, mentor, legacy, cellblock, goal</td>
+<td headers="Prob_Words" class="gt_row gt_left">plan, society, inside, release, learn, writing, personal, start, mind, past</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 33</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.88</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.10</td>
+<td headers="Coherence" class="gt_row gt_right">−41.53</td>
+<td headers="FREX_Words" class="gt_row gt_left">hartman, kenneth, windy, jungle, garden, redemption, edward, lethal, rot, fate</td>
+<td headers="Prob_Words" class="gt_row gt_left">death, world, human, society, soul, live, sentence, hope, system, bad</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 34</td>
+<td headers="Prop_Pct" class="gt_row gt_right">3.97</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.84</td>
+<td headers="Coherence" class="gt_row gt_right">−43.80</td>
+<td headers="FREX_Words" class="gt_row gt_left">program, education, vocational, educational, reentry, student, college, class, skill, success</td>
+<td headers="Prob_Words" class="gt_row gt_left">program, education, class, community, college, release, society, opportunity, incarcerate, rehabilitation</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 35</td>
+<td headers="Prop_Pct" class="gt_row gt_right">5.12</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.70</td>
+<td headers="Coherence" class="gt_row gt_right">−40.16</td>
+<td headers="FREX_Words" class="gt_row gt_left">youth, negative, environment, behavior, survival, development, impact, develop, perspective, influence</td>
+<td headers="Prob_Words" class="gt_row gt_left">society, behavior, change, experience, person, environment, individual, understand, human, mind</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 36</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.20</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.75</td>
+<td headers="Coherence" class="gt_row gt_right">−68.89</td>
+<td headers="FREX_Words" class="gt_row gt_left">gang, cdcr, folsom, stabbing, mafia, sny, mexican, yard, snitch, masculinity</td>
+<td headers="Prob_Words" class="gt_row gt_left">gang, yard, violence, california, facility, security, cdcr, staff, unit, level</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 37</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.12</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.72</td>
+<td headers="Coherence" class="gt_row gt_right">−64.30</td>
+<td headers="FREX_Words" class="gt_row gt_left">poetry, writer, poem, publish, book, tommylee, ivan, poet, literary, editor</td>
+<td headers="Prob_Words" class="gt_row gt_left">book, read, writing, write, writer, story, publish, art, page, world</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 38</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.24</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.89</td>
+<td headers="Coherence" class="gt_row gt_right">−79.70</td>
+<td headers="FREX_Words" class="gt_row gt_left">coronavirus, covid, pandemic, quarantine, virus, mask, corona, infect, outbreak, distance</td>
+<td headers="Prob_Words" class="gt_row gt_left">covid, staff, unit, virus, quarantine, pandemic, test, mask, week, coronavirus</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 39</td>
+<td headers="Prop_Pct" class="gt_row gt_right">2.07</td>
+<td headers="Exclusivity" class="gt_row gt_right">8.96</td>
+<td headers="Coherence" class="gt_row gt_right">−51.30</td>
+<td headers="FREX_Words" class="gt_row gt_left">olivia, beauty, bobby, ant, bug, dat, layer, scrabble, recite, blah</td>
+<td headers="Prob_Words" class="gt_row gt_left">word, world, window, hour, begin, hand, wall, air, eye, sit</td></tr>
+    <tr><td headers="Topic_Label" class="gt_row gt_left">Topic 40</td>
+<td headers="Prop_Pct" class="gt_row gt_right">0.35</td>
+<td headers="Exclusivity" class="gt_row gt_right">9.63</td>
+<td headers="Coherence" class="gt_row gt_right">−79.69</td>
+<td headers="FREX_Words" class="gt_row gt_left">pornography, chicago, elkton, registry, halfway, loretto, pedophile, porn, fsl, emily</td>
+<td headers="Prob_Words" class="gt_row gt_left">child, sentence, offender, sex, federal, pornography, letter, law, chicago, family</td></tr>
+  </tbody>
+  <tfoot>
+    <tr class="gt_sourcenotes">
+      <td class="gt_sourcenote" colspan="6"><span class='gt_from_md'><em>Note:</em> Corpus Share (%) reflects mean posterior document-topic proportion (mean theta x 100). FREX weights tokens by the harmonic mean of topic exclusivity and frequency.</span></td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</body>
+</html>

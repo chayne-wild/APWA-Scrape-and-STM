@@ -1,0 +1,8 @@
+Code,Construct,Resolved_Topic,Corpus_Pct,Top_Prob_Words,Top_FREX_Words
+T_CONNECTION,"Interpersonal Comm, Mail & Tablets",4,3.23,"write, letter, mail, staff, legal, file, grievance","mail, grievance, copy, complaint, envelope, letter, confiscate"
+T_UTILITY,Educational & Programmatic Utility,34,3.97,"program, education, class, community, college, release, society","program, education, vocational, educational, reentry, student, college"
+T_SURVEILLANCE,Institutional Control & Bureaucratic Rules,10,3.73,"staff, system, rule, correctional, correction, department, facility","michigan, mdoc, accountable, correctional, administrator, rule, correction"
+T_COVID,COVID-19 Quarantine & Unit Kiosks,38,2.24,"covid, staff, unit, virus, quarantine, pandemic, test","coronavirus, covid, pandemic, quarantine, virus, mask, corona"
+T_COMMISSARY,"Food Provision, Commissary & JPay",24,2.12,"food, meal, eat, bag, item, serve, water","noodle, bean, calorie, cheese, meat, ounce, meal"
+T_ECONOMY,"Carceral Economy, Wages & Phone Costs",22,6.54,"money, bad, lot, pay, job, call, jail","lot, money, jail, stay, lock, pay, job"
+T_REENTRY,Reentry Planning & Technological Readiness,32,1.51,"plan, society, inside, release, learn, writing, personal","levert, celldweller, brookshire, ritual, plan, solve, mentor"

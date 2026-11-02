@@ -1,0 +1,3 @@
+comparison,estimate,statistic,p.value,parameter,conf.low,conf.high,method
+COVID-19 (T38) vs. Educational Utility (T34),-0.03124291638501779,-1.904184865015055,0.056963374740233524,3711,-0.06334630707110166,9.250665530668838e-4,Pearson's product-moment correlation
+COVID-19 (T38) vs. Mail/Communication (T04),-0.01981745489623772,-1.207476404597209,0.2273256782071722,3711,-0.051951390741621695,0.012357475866200316,Pearson's product-moment correlation
