@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 06: MASTER K=40 TABLE, BETA TECH AUDIT, DYNAMIC TOPIC RESOLVER &
 #            QUALITATIVE EXEMPLAR VALIDATION (R)
