@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 09: TOPIC CORRELATION NETWORK & THE ECONOMY OF SCARCITY (R / IGRAPH)
 # ==============================================================================
