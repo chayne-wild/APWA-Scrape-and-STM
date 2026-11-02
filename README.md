@@ -112,7 +112,18 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 
 ---
 
-## 6. Suggested Citation
+## 6. Further Reading
+
+* **Grimmer, Justin, Margaret E. Roberts, and Brandon M. Stewart. 2022.** *Text as Data: A New Framework for Machine Learning and the Social Sciences*. Princeton University Press.
+* **Roberts, Margaret E., Brandon M. Stewart, Dustin Tingley, Christopher Lucas, Jetson Leder-Luis, Shana Kushner Gadarian, Bethany Albertson, and David G. Rand. 2014.** "Structural Topic Models for Open-Ended Survey Responses." *American Journal of Political Science* 58(4):1064–1082. https://doi.org/10.1111/ajps.12103
+* **Roberts, Margaret E., Brandon M. Stewart, and Dustin Tingley. 2019.** "`stm`: An R Package for Structural Topic Models." *Journal of Statistical Software* 91(2):1–40. https://doi.org/10.18637/jss.v091.i02
+* **Silge, Julia, and David Robinson. 2017.** *Text Mining with R: A Tidy Approach*. O'Reilly Media. https://www.tidytextmining.com/
+* **Stoltz, Dustin S., and Marshall A. Taylor. 2024.** *Mapping Texts: Computational Text Analysis for the Social Sciences*. Oxford University Press.
+* **Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023.** *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data* (2nd ed.). O'Reilly Media. https://r4ds.hadley.nz/
+
+---
+
+## 7. Suggested Citation
 
 **Text Citation (APA / ASA Style):**
 > Wild, Chayne. 2026. *Prefiguring the Carceral-Digital Turn: A Computational Linguistic Analysis of the American Prison Writing Archive (APWA)* (Version 1.0.0) [Computer software]. Virginia Tech. https://github.com/chayne-wild/APWA-Scrape-and-STM
