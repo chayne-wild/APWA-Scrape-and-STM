@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 03 (OPTIMIZED & DETERMINISTIC): PARALLEL INGESTION & NLP CLEANING (R)
 # ==============================================================================
