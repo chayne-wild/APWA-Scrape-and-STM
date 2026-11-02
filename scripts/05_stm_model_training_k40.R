@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 05: TRAIN FINAL K = 40 STRUCTURAL TOPIC MODEL (R)
 # Task: Train the deterministic K = 40 STM using Spectral initialization and
