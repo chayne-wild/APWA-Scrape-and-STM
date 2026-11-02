@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 08: THE PANDEMIC CATALYST & THETA EXCLUSIVITY CORRELATIONS (R)
 # ==============================================================================
