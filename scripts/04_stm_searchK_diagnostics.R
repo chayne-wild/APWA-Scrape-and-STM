@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 04 (CHECKPOINTED): STM HYPERPARAMETER TUNING & DIAGNOSTICS (R)
 # Task: Execute fault-tolerant searchK evaluation across K = {10..60}, print
