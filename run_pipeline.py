@@ -2,7 +2,8 @@
 # MASTER PIPELINE ORCHESTRATOR: APWA CARCERAL-DIGITAL TURN
 # Purpose: Executes the modular Python/R pipeline sequentially, strips Colab
 #          '%%R' cell magics on the fly for CLI Rscript compatibility, routes
-#          artifacts into data/ and results/ subfolders, and logs sessionInfo().
+#          artifacts into data/ and results/ subfolders, safely purges raw JSONL
+#          after RDS verification, and logs sessionInfo().
 # ==============================================================================
 
 import os
@@ -17,6 +18,7 @@ RUN_PREPROCESS  = True   # Run Tidyverse JSONL ingestion & STM matrix creation (
 RUN_SEARCHK     = False  # Set True to re-run computationally heavy K={10..60} grid search (04)
 RUN_STM_MODEL   = True   # Train deterministic K=40 Spectral STM (05)
 RUN_DOWNSTREAM  = True   # Run qualitative validation, regressions, & igraph networks (06-09)
+PURGE_RAW_JSONL = True   # Purge raw 'apwa_parsed_archive.jsonl' after verifying RDS backups in data/
 
 # --- 2. DIRECTORY INITIALIZATION ---
 os.makedirs(SAFE_WORKSPACE, exist_ok=True)
@@ -52,30 +54,68 @@ def organize_artifacts():
     """Routes flat root outputs into structured data/, results/charts/, and results/figures/ folders."""
     routing_map = {
         'data': [
-            'apwa_master_urls.csv', 'apwa_parsed_archive.jsonl', 'apwa_excluded_urls.csv',
-            'apwa_clean_corpus.rds', 'apwa_stm_out_object.rds', 'apwa_searchK_results.rds',
-            'apwa_stm_model_k40_final.rds', 'apwa_prep_tripartite_effects.rds',
+            'apwa_master_urls.csv',
+            'apwa_excluded_urls.csv',
+            'apwa_clean_corpus.rds',
+            'apwa_stm_out_object.rds',
+            'apwa_searchK_heldout_split.rds',
+            'apwa_searchK_checkpoint.rds',
+            'apwa_searchK_results.rds',
+            'apwa_stm_model_k40_final.rds',
+            'resolved_target_topics_k40.rds',
+            'apwa_prep_tripartite_effects.rds',
             'apwa_topic_correlations.rds'
         ],
         'results/charts': [
-            'top_topic_words_k40.csv', 'qualitative_exemplar_essays.txt',
-            'table01_prefigurative_regressions.csv', 'table01_prefigurative_regressions.html',
-            'table02_covid_utility_correlation.csv', 'table03_economy_of_scarcity_correlation.csv'
+            'tab01_searchK_diagnostics.csv',
+            'tab01_searchK_diagnostics.html',
+            'top_topic_words_k40.csv',
+            'tab02_full_k40_topic_profiles.csv',
+            'tab02_full_k40_topic_profiles.html',
+            'tab03_tech_vocabulary_beta_audit.csv',
+            'tab03_tech_vocabulary_beta_audit.html',
+            'resolved_target_topics_k40.csv',
+            'qualitative_exemplar_essays.txt',
+            'table01_prefigurative_regressions.csv',
+            'table01_prefigurative_regressions.html',
+            'table02_covid_utility_correlation.csv',
+            'table03_economy_of_scarcity_correlation.csv',
+            'table04_direct_digital_lexicon_by_year.csv',
+            'table04_direct_digital_lexical_regressions.csv'
         ],
         'results/figures': [
-            'fig01_searchK_diagnostics.png', 'fig02_tripartite_trajectories_full.png',
-            'fig03_tripartite_trajectories_2010_2024.png',
+            'fig01_searchK_diagnostics.png',
+            'fig01b_coherence_exclusivity_frontier.png',
+            'fig02_all_40_topics_prevalence.png',
+            'fig03a_tripartite_trajectories_full.png',
+            'fig03b_tripartite_trajectories_2010_2024.png',
             'fig04_pandemic_catalyst_ratchet_effect.png',
             'fig05a_topic_correlation_network_stm.png',
-            'fig05b_topic_correlation_network_igraph.png'
+            'fig05b_topic_correlation_network_igraph.png',
+            'fig06_direct_digital_lexical_trajectory.png'
         ]
     }
+
     for target_dir, files in routing_map.items():
         for filename in files:
             if os.path.exists(filename):
                 dest = os.path.join(target_dir, filename)
                 shutil.copy2(filename, dest)
                 print(f"Copied '{filename}' -> '{dest}'")
+
+    # Safe Purge of Raw JSONL Scrape File (Only after verifying RDS corpus objects exist in data/)
+    raw_jsonl = 'apwa_parsed_archive.jsonl'
+    rds_backup_ok = (
+        os.path.exists('data/apwa_clean_corpus.rds') and
+        os.path.exists('data/apwa_stm_out_object.rds')
+    )
+
+    if PURGE_RAW_JSONL and os.path.exists(raw_jsonl):
+        if rds_backup_ok:
+            os.remove(raw_jsonl)
+            print(f"\n[SECURITY & STORAGE PURGE] Verified RDS backups in 'data/'. Purged raw '{raw_jsonl}'.")
+        else:
+            print(f"\n[WARNING] Skipped purging '{raw_jsonl}' because RDS backups were not found in 'data/'.")
 
 def export_session_info():
     """Writes R sessionInfo() to results/session_info.txt for computational reproducibility."""

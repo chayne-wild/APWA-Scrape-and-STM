@@ -1,11 +1,6 @@
 %%R
 # ==============================================================================
-# SCRIPT 03: TIDYVERSE DATA INGESTION, TEMPORAL NORMALIZATION, & NLP CLEANING (R)
-# Task: Ingest 'apwa_parsed_archive.jsonl' natively in R with fault tolerance,
-#       normalize 'clean_year', execute Tidyverse NLP cleaning (possessive
-#       normalization, domain-guarded lemmatization, and the "Plural Bypass"
-#       expanded stop-word filter), and export the 1:1 synchronized STM
-#       mathematical matrix ('out') and cleaned corpus.
+# SCRIPT 03 (OPTIMIZED & DETERMINISTIC): PARALLEL INGESTION & NLP CLEANING (R)
 # ==============================================================================
 
 library(tidyverse)
@@ -15,6 +10,14 @@ library(textstem)
 library(lexicon)
 library(stm)
 
+use_parallel <- requireNamespace("furrr", quietly = TRUE) && requireNamespace("future", quietly = TRUE)
+if (use_parallel) {
+  library(future)
+  library(furrr)
+  plan(multisession, workers = max(1, parallel::detectCores() - 1))
+  cat("Multi-core CPU acceleration ENABLED with", nbrOfWorkers(), "workers.\n")
+}
+
 # 1. Verify Workspace
 safe_workspace <- "/content/drive/MyDrive/colab_apwa_folder"
 if (!dir.exists(safe_workspace)) {
@@ -23,10 +26,7 @@ if (!dir.exists(safe_workspace)) {
 if (getwd() != safe_workspace) setwd(safe_workspace)
 cat("Operating inside R workspace:", getwd(), "\n")
 
-# 2. Fault-Tolerant Line-by-Line JSONL Ingestion in R
-# Rationale: Native stream_in() halts if a single line has a partial network write.
-# Using read_lines() + purrr::safely() isolates and skips any corrupted JSON packet
-# while keeping the pipeline 100% inside R/Tidyverse.
+# 2. Fault-Tolerant Line-by-Line JSONL Ingestion
 cat("Reading raw JSONL archive with fault tolerance...\n")
 raw_lines <- read_lines("apwa_parsed_archive.jsonl")
 
@@ -40,26 +40,29 @@ safe_json_parse <- safely(function(x) {
   )
 })
 
-parsed_results <- map(raw_lines, safe_json_parse)
+if (use_parallel) {
+  parsed_results <- future_map(raw_lines, safe_json_parse)
+} else {
+  parsed_results <- map(raw_lines, safe_json_parse)
+}
 
-# Log any skipped corrupted lines
 failed_lines <- which(!map_lgl(parsed_results, ~ is.null(.x$error)))
 if (length(failed_lines) > 0) {
   cat("Bypassed corrupted JSON records on line(s):", paste(failed_lines, collapse = ", "), "\n")
 }
 
+# CRITICAL REPRODUCIBILITY LOCK: arrange(slug) ensures identical document/vocab
+# indexing regardless of concurrent HTTP completion order in Script 02.
 raw_df <- parsed_results %>%
   map("result") %>%
   compact() %>%
   bind_rows() %>%
-  distinct(slug, .keep_all = TRUE)
+  distinct(slug, .keep_all = TRUE) %>%
+  arrange(slug)
 
 cat("Successfully loaded", nrow(raw_df), "valid transcribed documents.\n")
 
-# 3. Temporal Normalization (Extracting & Bounding 4-Digit Authorship Year)
-# Rationale: STM prevalence regression requires a clean numeric year covariate.
-# Bounding to [1965, 2026] prevents metadata typos (e.g., '1900' or '2099')
-# from acting as high-leverage outliers in STM temporal splines.
+# 3. Temporal Normalization
 clean_data <- raw_df %>%
   mutate(
     clean_year = as.integer(str_extract(date_raw, "\\b(19|20)\\d{2}\\b"))
@@ -77,9 +80,6 @@ cat("Dropped", nrow(raw_df) - nrow(clean_data), "document(s) missing a verifiabl
 cat("Temporally normalized corpus size:", nrow(clean_data), "documents.\n")
 
 # 4. Expanded Domain-Specific Stop-Word Lexicon
-# Rationale: High-entropy domain words ('prison', 'inmate') and conversational
-# filler ('time', 'like', 'know') cause severe cross-topic contamination and
-# degrade FREX exclusivity if not aggressively pruned.
 custom_stops <- tibble(
   word = c(
     "prison", "inmate", "prisoner", "cell", "guard", "officer", "c.o.", "co",
@@ -89,51 +89,54 @@ custom_stops <- tibble(
   )
 )
 
-# 5. Domain-Guarded Lemmatization Dictionary (Addressing Supervisor Critique)
-# Rationale: Standard lexicon::hash_lemmas is Part-of-Speech blind. It maps
-# homographs to the wrong root (e.g., 'wound' -> 'wind', 'left' -> 'leave')
-# and collapses institutional carceral/legal gerunds into generic verbs
-# (e.g., 'hearing' -> 'hear', 'housing' -> 'house', 'programming' -> 'program').
-# Below, we protect domain-critical vocabulary and verify 'cope/coping' vs 'cop'.
+all_stops_vec <- unique(c(stop_words$word, custom_stops$word))
+
+# 5. Domain-Guarded Lemmatization Dictionary (Protects Carceral-Digital & Legal Nouns)
 protected_overrides <- tribble(
   ~token,        ~lemma,
-  # Psychological coping vs. police ("cop") disambiguation
+  "jpay",        "jpay",
+  "corrlinks",   "corrlinks",
+  "corrlink",    "corrlinks",
+  "securus",     "securus",
+  "gtl",         "gtl",
+  "kiosk",       "kiosk",
+  "kiosks",      "kiosk",
+  "tablet",      "tablet",
+  "tablets",     "tablet",
   "cope",        "cope",
   "copes",       "cope",
   "coped",       "cope",
-  "coping",      "coping",     # Keep psychological gerund/noun intact (or map to "cope", never "cop")
+  "coping",      "coping",
   "cop",         "cop",
   "cops",        "cop",
-  # Homographs that hash_lemmas mis-lemmatizes in carceral text
-  "wound",       "wound",      # Prevent 'wound' (injury) -> 'wind'
+  "wound",       "wound",
   "wounds",      "wound",
   "wounded",     "wound",
-  "left",        "left",       # Prevent 'left' -> 'leave'
-  "grounds",     "grounds",    # Preserve legal/institutional 'grounds'
-  # Institutional, legal, & carceral nouns/gerunds to protect from verb collapse
-  "hearing",     "hearing",    # Parole/court hearing (prevent -> 'hear')
+  "left",        "left",
+  "grounds",     "grounds",
+  "hearing",     "hearing",
   "hearings",    "hearing",
-  "ruling",      "ruling",     # Court ruling (prevent -> 'rule')
+  "ruling",      "ruling",
   "rulings",     "ruling",
-  "proceeding",  "proceeding", # Legal proceeding (prevent -> 'proceed')
+  "proceeding",  "proceeding",
   "proceedings", "proceeding",
-  "finding",     "finding",    # Court finding (prevent -> 'find')
+  "finding",     "finding",
   "findings",    "finding",
-  "housing",     "housing",    # Prison housing unit (prevent -> 'house')
-  "programming", "programming",# Prison programming (prevent -> 'program')
-  "training",    "training",   # Vocational training (prevent -> 'train')
-  "building",    "building",   # Prison building (prevent -> 'build')
+  "housing",     "housing",
+  "programming", "programming",
+  "training",    "training",
+  "building",    "building",
   "buildings",   "building",
-  "beating",     "beating",    # Physical beating (prevent -> 'beat')
+  "beating",     "beating",
   "beatings",    "beating",
-  "shooting",    "shooting",   # Prevent -> 'shoot'
+  "shooting",    "shooting",
   "shootings",   "shooting",
-  "killing",     "killing",    # Prevent -> 'kill'
+  "killing",     "killing",
   "killings",    "killing",
-  "feeling",     "feeling",    # Emotional feeling (prevent -> 'feel')
+  "feeling",     "feeling",
   "feelings",    "feeling",
-  "suffering",   "suffering",  # Prevent -> 'suffer'
-  "writing",     "writing",    # Prison writing (prevent -> 'write')
+  "suffering",   "suffering",
+  "writing",     "writing",
   "writings",    "writing"
 )
 
@@ -144,71 +147,57 @@ apwa_lemma_dict <- as_tibble(lexicon::hash_lemmas) %>%
     lemma = tolower(lemma)
   ) %>%
   distinct(token, .keep_all = TRUE) %>%
-  # Remove overridden tokens from base lexicon and bind domain-protected mappings
   anti_join(protected_overrides, by = "token") %>%
   bind_rows(protected_overrides)
 
-# Print diagnostic audit table to verify supervisor's concern in console logs
-cat("\n--- Diagnostic Audit of Domain-Guarded Lemmatizer ---\n")
-audit_terms <- tibble(word = c("copes", "coping", "coped", "cops", "wound", "wounds", "hearings", "housing", "programming", "left")) %>%
-  left_join(apwa_lemma_dict, by = c("word" = "token")) %>%
-  mutate(final_lemma = coalesce(lemma, word)) %>%
-  select(original_token = word, mapped_lemma = final_lemma)
-print(as.data.frame(audit_terms), row.names = FALSE)
-cat("-----------------------------------------------------\n\n")
+# 6. High-Speed Vectorized NLP Pipeline
+cat("Executing high-speed Tidytext tokenization and unique-type lemmatization...\n")
 
-# 6. Tidyverse NLP Pipeline & The "Plural Bypass" Fix
-# Rationale: Evaluating tokens against the stop-word list both BEFORE and AFTER
-# lemmatization ensures pluralized domain noise (e.g., "prisoners" -> "prisoner",
-# "inmates" -> "inmate") cannot bypass the filter.
-cat("Executing Tidytext tokenization, possessive normalization, lemmatization, and Plural Bypass filtering...\n")
-
-cleaned_corpus <- clean_data %>%
-  # Step 6A: Normalize typographic apostrophes so contractions & possessives parse cleanly
+raw_tokens <- clean_data %>%
+  select(slug, transcript) %>%
   mutate(transcript_norm = str_replace_all(transcript, "[\u2018\u2019\u02BC`]", "'")) %>%
-  # Step 6B: Tokenize into lowercase words
-  unnest_tokens(output = word, input = transcript_norm, token = "words", to_lower = TRUE) %>%
-  # Step 6C: Pre-lemmatization stop-word removal (catches contractions like "don't", "can't")
-  anti_join(stop_words, by = "word") %>%
-  # Step 6D: Strip possessive suffixes ('s or trailing ') so nouns like "mother's" -> "mother"
-  #          are rescued rather than deleted by the alphabetic regex filter below
-  mutate(word = str_remove_all(word, "'s$|'$")) %>%
-  # Step 6E: Keep strictly alphabetic tokens of at least 3 characters
+  select(-transcript) %>%
+  unnest_tokens(output = raw_word, input = transcript_norm, token = "words", to_lower = TRUE)
+
+vocab_lookup <- raw_tokens %>%
+  distinct(raw_word) %>%
+  filter(!(raw_word %in% stop_words$word)) %>%
+  mutate(word = str_remove_all(raw_word, "'s$|'$")) %>%
   filter(str_detect(word, "^[a-z]{3,}$")) %>%
-  # Step 6F: Pre-lemmatization stop-word removal (Standard + Custom)
-  anti_join(stop_words, by = "word") %>%
-  anti_join(custom_stops, by = "word") %>%
-  # Step 6G: Fast, transparent Tidyverse lemmatization via domain-guarded dictionary
+  filter(!(word %in% all_stops_vec)) %>%
   left_join(apwa_lemma_dict, by = c("word" = "token")) %>%
   mutate(lemma = coalesce(lemma, word)) %>%
-  # Step 6H: THE PLURAL BYPASS FIX (Post-lemmatization stop-word & length filter)
-  filter(str_detect(lemma, "^[a-z]{3,}$")) %>%
-  anti_join(stop_words, by = c("lemma" = "word")) %>%
-  anti_join(custom_stops, by = c("lemma" = "word")) %>%
-  # Step 6I: Re-aggregate cleaned lemmas per document while preserving metadata
+  filter(
+    str_detect(lemma, "^[a-z]{3,}$"),
+    !(lemma %in% all_stops_vec)
+  ) %>%
+  select(raw_word, lemma)
+
+cleaned_corpus <- raw_tokens %>%
+  inner_join(vocab_lookup, by = "raw_word") %>%
   group_by(slug) %>%
   summarize(cleaned_text = str_c(lemma, collapse = " "), .groups = "drop") %>%
   inner_join(clean_data, by = "slug") %>%
+  arrange(slug) %>%
   select(slug, url, clean_year, date_raw, transcript, cleaned_text)
 
+rm(raw_tokens, vocab_lookup)
+gc(verbose = FALSE)
+
 # 7. Build the Synchronized STM Mathematical Matrix ('out')
-# Rationale: Passing our Tidy-cleaned text into textProcessor (with default R
-# cleaning disabled) and prepDocuments() removes hapax legomena (single-use terms)
-# and guarantees 1:1 row alignment between out$documents, out$meta, and raw transcripts.
 cat("Constructing STM document-term matrix and pruning hapax legomena...\n")
 
 processed <- textProcessor(
   documents         = cleaned_corpus$cleaned_text,
   metadata          = as.data.frame(cleaned_corpus),
-  lowercase         = FALSE, # Handled in Tidyverse
-  removestopwords   = FALSE, # Handled in Tidyverse
-  removenumbers     = FALSE, # Handled in Tidyverse
-  removepunctuation = FALSE, # Handled in Tidyverse
-  stem              = FALSE, # Preserves domain-guarded lemmatization
+  lowercase         = FALSE,
+  removestopwords   = FALSE,
+  removenumbers     = FALSE,
+  removepunctuation = FALSE,
+  stem              = FALSE,
   wordLengths       = c(3, Inf)
 )
 
-# lower.thresh = 1 purges words appearing in only 1 document across the archive
 out <- prepDocuments(
   documents    = processed$documents,
   vocab        = processed$vocab,
@@ -217,9 +206,6 @@ out <- prepDocuments(
 )
 
 # 8. Enforce Strict 1:1 Row Alignment After prepDocuments() Pruning
-# Rationale: If prepDocuments() drops any ultra-short document consisting solely
-# of hapax legomena, re-syncing cleaned_corpus from out$meta guarantees that
-# nrow(cleaned_corpus) == length(out$documents) for downstream findThoughts() calls.
 cleaned_corpus <- as_tibble(out$meta) %>%
   select(slug, url, clean_year, date_raw, transcript, cleaned_text)
 
@@ -230,7 +216,7 @@ cat(
 )
 
 # 9. Serialize Cleaned Data & STM Input Object to Disk
-saveRDS(cleaned_corpus, file = "apwa_clean_corpus.rds")
-saveRDS(out, file = "apwa_stm_out_object.rds")
+saveRDS(cleaned_corpus, file = "apwa_clean_corpus.rds", compress = FALSE)
+saveRDS(out, file = "apwa_stm_out_object.rds", compress = FALSE)
 
 cat("\n[TASK 03 COMPLETE] Saved 1:1 aligned 'apwa_clean_corpus.rds' and 'apwa_stm_out_object.rds'.\n")
