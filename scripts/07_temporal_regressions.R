@@ -1,4 +1,4 @@
-%%R
+# %%R <- uncomment this if running inside python / colab
 # ==============================================================================
 # SCRIPT 07: TEMPORAL COVARIATE ESTIMATION, SURGE-ERA REGRESSIONS &
 #            DIRECT CARCERAL-DIGITAL LEXICAL TRAJECTORIES (R)
