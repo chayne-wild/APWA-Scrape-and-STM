@@ -100,7 +100,7 @@ APWA-Scrape-and-STM/
 
 ## 5. Ethical & Institutional Compliance
 
-The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mission of bearing witness to the lived reality of incarceration. Because incarcerated authors write under conditions of vulnerability and surveillance, our extraction and storage protocol prioritizes ethical non-interference, copyright respect, and server politeness:
+The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mission of bearing witness to the lived reality of incarceration. Because incarcerated authors write under conditions of vulnerability and surveillance, the extraction and storage protocol prioritizes ethical non-interference, copyright respect, and server politeness:
 * **`robots.txt` & Terms of Service Compliance:** Verified against [https://prisonwitness.org/robots.txt](https://prisonwitness.org/robots.txt) (`Allow: /`) and the Johns Hopkins University Library Privacy Policy. No unlisted Personally Identifiable Information (PII) was collected.
 * **Polite Bot Identification & Rate Limiting:** All HTTP requests transmitted an explicit academic `User-Agent` header (`APWA_Virginia_Tech_Research_Bot/1.0 (chayne@vt.edu)`) with randomized delays (`1.5`–`3.0s` for index pages; `MAX_WORKERS = 4` with `0.5`–`1.5s` per-thread pauses for essays) and state-tracking resume logic.
 * **Raw JSONL Purge (`Step 10A`):** Once the 1:1 aligned R mathematical matrices (`apwa_clean_corpus.rds` and `apwa_stm_out_object.rds`) are verified on Google Drive, the raw bulk scrape file (`apwa_parsed_archive.jsonl`) is automatically purged to prevent redistributing raw bulk transcripts in public Git version control.
@@ -112,7 +112,7 @@ The APWA is hosted by Johns Hopkins University (`prisonwitness.org`) with the mi
 
 ---
 
-## 6. Further Reading
+## 6. References
 
 * Grimmer, Justin, Margaret E. Roberts, and Brandon M. Stewart. 2022. *Text as Data: A New Framework for Machine Learning and the Social Sciences*. Princeton University Press.
 * Roberts, Margaret E., Brandon M. Stewart, and Dustin Tingley. 2019. "`stm`: An R Package for Structural Topic Models." *Journal of Statistical Software* 91(2):1–40. https://doi.org/10.18637/jss.v091.i02
