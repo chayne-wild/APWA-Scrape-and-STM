@@ -1,8 +1,10 @@
 ---
 disclosure-default: ai-assisted
 models-used:
-  - Gemini 4 Argon (gemini-4-argon)
-  - Google Colab AI (gemini-2.0-flash-lite)
+  - Gemini 4 Argon
+  - gemini-4-argon
+  - Google Colab AI
+  - gemini-2.0-flash-lite
 providers:
   - Google
 scope: |
